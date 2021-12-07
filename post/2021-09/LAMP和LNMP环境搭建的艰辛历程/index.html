@@ -1,0 +1,355 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LAMP和LNMP环境搭建的艰辛历程 | Seizer</title><meta name="keywords" content="学习笔记"><meta name="author" content="Seizer"><meta name="copyright" content="Seizer"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="lamp lnmp 环境操作系统：Ubuntu 20.10">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LAMP和LNMP环境搭建的艰辛历程">
+<meta property="og:url" content="https://seizer-zyx.github.io/post/2021-09/LAMP%E5%92%8CLNMP%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E7%9A%84%E8%89%B0%E8%BE%9B%E5%8E%86%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Seizer">
+<meta property="og:description" content="lamp lnmp 环境操作系统：Ubuntu 20.10">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/seizer-zyx/picgo/master/202108292144431.jpg">
+<meta property="article:published_time" content="2021-09-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-07T04:39:28.114Z">
+<meta property="article:author" content="Seizer">
+<meta property="article:tag" content="学习笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/seizer-zyx/picgo/master/202108292144431.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://seizer-zyx.github.io/post/2021-09/LAMP%E5%92%8CLNMP%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E7%9A%84%E8%89%B0%E8%BE%9B%E5%8E%86%E7%A8%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'LAMP和LNMP环境搭建的艰辛历程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-12-07 12:39:28'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/transparent.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-butterfly-clock/lib/clock.min.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Seizer</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">LAMP和LNMP环境搭建的艰辛历程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-09-09T16:00:00.000Z" title="undefined 2021-09-10 00:00:00">2021-09-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="LAMP和LNMP环境搭建的艰辛历程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="LAMP环境的搭建"><a href="#LAMP环境的搭建" class="headerlink" title="LAMP环境的搭建"></a>LAMP环境的搭建</h1><blockquote>
+<p>在图形管理化界面中依次打开系统设置、软件和更新。在下载自重选择其他站点，然后在中国的条目下选择mirrors.ustc.edu.cn。</p>
+</blockquote>
+<p>Ubuntu换源可参考<a target="_blank" rel="noopener" href="https://mirrors.ustc.edu.cn/help/ubuntu.html">https://mirrors.ustc.edu.cn/help/ubuntu.html</a></p>
+<blockquote>
+<p>更新资源包:sudo apt update</p>
+<p>更新软件:sudo apt upgrade</p>
+<p>清除不需要的软件:sudo apt autoremove</p>
+<p>清除不需要的文件:sudo apt autoclean</p>
+</blockquote>
+<h2 id="Apache"><a href="#Apache" class="headerlink" title="Apache"></a>Apache</h2><p>接下来就可以进入正式搭建了</p>
+<blockquote>
+<p>su root                     //方便之后更快的操作，切换root用户</p>
+<p>apt install apache2</p>
+</blockquote>
+<p>默认的配置文件:/etc/apache2/sites-enabled/000-default.conf</p>
+<p>默认网站根目录:/var/www/html</p>
+<p>安装完成之后<strong>检查apache是否开启</strong>:</p>
+<blockquote>
+<p>service apache2 status            // 查看apache是否开启</p>
+</blockquote>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559990.png" alt="image-20210730172438646"></p>
+<blockquote>
+<p>service apache2 stop            // 关闭apache服务</p>
+<p>service apache2 start            // 打开apache服务</p>
+<p>service apache2 restart        //重启apache服务</p>
+</blockquote>
+<p>也可以查看80端口是否开启</p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559991.png" alt="image-20210730172703746"></p>
+<h3 id="安装apache遇到的问题"><a href="#安装apache遇到的问题" class="headerlink" title="安装apache遇到的问题"></a>安装apache遇到的问题</h3><p>安装过程中发现apache启动不了，使用</p>
+<blockquote>
+<p>systemctl status apache2         查看apache服务的状态</p>
+</blockquote>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559992.png" alt="image-20210730173206831"></p>
+<p>查阅资料和翻译英语得知是80端口被占用所以开启不了apache服务</p>
+<blockquote>
+<p>netstat -ntulp|grep 80    // 查看80端口</p>
+</blockquote>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559993.png" alt="image-20210730173427993"></p>
+<p>这我才发现是因为之前搭建靶场时docker容器占用了80端口，只要把容器停止就好了</p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559994.png" alt="image-20210730173713326"></p>
+<h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h2><blockquote>
+<p>apt install mysql-server</p>
+</blockquote>
+<p>mysql的配置文件: /etc/mysql/mysql.conf.d/mysqld.cnf</p>
+<h3 id="登录mysql的方法"><a href="#登录mysql的方法" class="headerlink" title="登录mysql的方法"></a>登录mysql的方法</h3><ol>
+<li>cat /etc/mysql/debian.cnf查看默认用户的密码</li>
+</ol>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559995.png" alt="image-20210730174354524"></p>
+<blockquote>
+<p>mysql -u debian-sys-maint -p</p>
+</blockquote>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559996.png" alt="image-20210730174449794"></p>
+<blockquote>
+<p> 修改密码:</p>
+<p>注：8.0以上版本 ‘password’ 字段已经不管用了，会报错，相关的命令比如：<code>update mysql.user set password=&#39;newpassword&#39; where user=&#39;root&#39;;</code>一同失效</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED <span class="keyword">WITH</span> mysql_native_password <span class="keyword">BY</span> <span class="string">&#x27;你的密码&#x27;</span>;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Ctrl+Z退出mysql，重新运行，使用新密码登录，完成</p>
+</blockquote>
+<h2 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h2><blockquote>
+<p>apt install php7.4</p>
+</blockquote>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559997.png" alt="image-20210730182358690"></p>
+<p>测试php是否安装成功</p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559998.png" alt="image-20210730182527561"></p>
+<p>安装php组件：</p>
+<blockquote>
+<p>apt install apt install php-curlphp.cgi php-json</p>
+</blockquote>
+<p>php-curl：curl是一个库，能让你通过URL和许多不同种的服务器进行勾搭、搭讪和深入交流，并且还支持许多协议。并且人家还说了curl可以支持https认证、http post、ftp上传、代理、cookies、简单口令认证等等功能啦。</p>
+<p>php.cgi:    cgi是 (common gateway interface)通用网关接口 .php-cgi是php提供给web serve也就是http前端服务器的cgi协议接口程序，当每次接到http前端服务器的请求都会开启一个php-cgi进程进行处理。</p>
+<p>php-json: json 序列化相关操作</p>
+<p>安装php扩展：</p>
+<blockquote>
+<p>apt install php-pear libapache2-mod-php php-mysql</p>
+</blockquote>
+<p>php-pear: Pear 是“PHP Extension and Application Repository”的缩写，即PHP扩展和应用仓库。Pear 将PHP程序开发过程中常用的功能编写成类库，涵盖了页面呈现、数据库访问、文件操作、数据结构、缓存操作、网络协议、WebService 等许多方面，用户可以通过下载这些类库并适当的作一些定制以实现自己需要的功能。避免重复发明“车轮”。Pear 的出现大大提高了PHP 程序的开发效率和开发质量。</p>
+<p>libapache2-mod-php:我猜测应该是对apache php解析的一个增强</p>
+<p>php-mysql: 关于php对数据库操作的函数</p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559999.png" alt="image-20210730190357602"></p>
+<h1 id="Lnmp环境的搭建"><a href="#Lnmp环境的搭建" class="headerlink" title="Lnmp环境的搭建"></a>Lnmp环境的搭建</h1><h2 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h2><blockquote>
+<p>停止apache服务        service apache2 stop</p>
+<p>安装nginx                    apt install nginx</p>
+</blockquote>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559000.png" alt="image-20210730230840603"></p>
+<h2 id="PHP-1"><a href="#PHP-1" class="headerlink" title="PHP"></a>PHP</h2><blockquote>
+<p>apt install php7.4-fpm</p>
+</blockquote>
+<blockquote>
+<p>vim /etc/nginx/sites-available/default</p>
+</blockquote>
+<p>在56行做如下修改</p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559001.png" alt="image-20210730231157601"></p>
+<blockquote>
+<p>service nginx restart                // 重启服务即可</p>
+</blockquote>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559002.png" alt="image-20210730231448845"></p>
+<p>或者还可以这样</p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559003.png" alt="image-20210730231007177"></p>
+<p>然后这样</p>
+<blockquote>
+<p>vim /etc/php/7.4/fpm/pool.d/<a target="_blank" rel="noopener" href="http://www.conf/">www.conf</a></p>
+</blockquote>
+<p>在37行加入下面这句话</p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559004.png" alt="image-20210730231620847"></p>
+<blockquote>
+<p>service php7.4-fpm restart                //重启服务即可</p>
+</blockquote>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559005.png" alt="image-20210730231747532"></p>
+<h1 id="配置PHP环境中出现的一些问题"><a href="#配置PHP环境中出现的一些问题" class="headerlink" title="配置PHP环境中出现的一些问题"></a>配置PHP环境中出现的一些问题</h1><p>PHP运行目前为止主要的三种方式：</p>
+<ol>
+<li>以模块加载的方式运行——将PHP集成到Apache服务器，以同一个进程运行。</li>
+<li>以CGI的方式运行——Apache在遇到PHP脚本的时候会将PHP程序提交给CGI应用程序（php-cgi.exe）解释，解释之后的结果返回给Apache，最后再返回给相应的请求用户。</li>
+<li>以FastCGI的方式运行——CGI的加强版本，CGI是单进程，多线程的运行方式，程序执行完成之后就会销毁，所以每次都需要加载配置和环境变量fork-and-execute（创建-执行）。而FastCGI则不同，FastCGI像是一个常驻 (long-live) 型的CGI，只要激活后，在web服务器启动时就开启了一个进程，它可以一直执行着，不会每次都要花费时间去fork一个进程(CGI最为人诟病的fork-and-execute模式)。</li>
+</ol>
+<h2 id="CGI"><a href="#CGI" class="headerlink" title="CGI"></a>CGI</h2><blockquote>
+<p> CGI(Common Gateway Interface)公共网关接口是HTTP服务器与机器上的程序进行“交谈”的一种工具，其程序须运行在网络服务器上。CGI可以用任何一种语言编写，只要这种语言具有标准输入、输出和环境变量。</p>
+<p>工作原理：CGI程序根据请求提交的参数作相应处理，然后输出标准的html语句返回给web server，web server再返回给客户端。</p>
+</blockquote>
+<p>简单的说：cgi就是专门用来和web 服务器打交道的。web服务器收到用户请求，就会把请求提交给cgi程序(php的fastcgi），cgi程序根据请求提交的参数作应处理（解析php），然后输出标准的html语句返回给web服务器，再返回给客户端，这就是普通cgi的工作原理。</p>
+<h2 id="FastCGI"><a href="#FastCGI" class="headerlink" title="FastCGI"></a>FastCGI</h2><blockquote>
+<p> FastCGI像是一个常驻(long-live)型的CGI，它可以一直执行着，只要激活后，不会每次都要花费时间去fork一次(这是CGI最为人诟病的fork-and-execute 模式)。它还支持分布式的运算, 即 FastCGI 程序可以在网站服务器以外的主机上执行并且接受来自其它网站服务器来的请求。</p>
+</blockquote>
+<p>传统的cgi协议在每次连接请求时，会开启一个进程进行处理，处理完毕会关闭该进程，因此下次连接，又要再次开启一个进程进行处理，因此有多少个连接就有多少个cgi进程，这也就是为什么传统的cgi会显得缓慢的原因，因此过多的进程会消耗资源和内存。而fast-cgi则是一个进程可以处理多个请求（这里的意思不是说一个进程可以同时处理多个请求，二十因为fastcgi是常驻cgi，不需要花费时间去fork进程），和上面的cgi协议完全不一样，cgi是一个进程只能处理一个请求，这样就会导致大量的cgi程序，因此会给服务器带来负担。</p>
+<p>FastCGI是语言无关的、可伸缩架构的CGI开放扩展，其主要行为是将CGI解释器进程保持在内存中并因此获得较高的性能。众所周知，CGI解释器的反复加载是CGI性能低下的主要原因，如果CGI解释器保持在内存中并接受FastCGI进程管理器调度，则可以提供良好的性能、伸缩性、Fail- Over特性等等。</p>
+<p><strong>工作原理</strong></p>
+<ol>
+<li>Web Server启动时载入FastCGI进程管理器（IIS ISAPI或Apache Module)</li>
+<li>FastCGI进程管理器自身初始化，启动多个CGI解释器进程(在任务管理器中可见多个php-cgi.exe)并等待来自WebServer的连接,FastCGI使用tcp方式通信。</li>
+<li>当客户端请求到达Web Server时，FastCGI进程管理器选择并连接到一个CGI解释器。WebServer将CGI环境变量和标准输入发送到FastCGI子进程php-cgi。</li>
+<li>FastCGI子进程完成处理后将标准输出和错误信息从同一连接返回WebServer。当FastCGI子进程关闭连接时，请求便告处理完成。FastCGI子进程接着等待并处理来自FastCGI进程管理器(运行WebServer中)的下一个连接。 在CGI模式中，php-cgi在此便退出了。</li>
+</ol>
+<h2 id="php-cgi"><a href="#php-cgi" class="headerlink" title="php-cgi"></a>php-cgi</h2><blockquote>
+<p>php-cgi是php提供给web serve也就是http前端服务器的<strong>cgi协议接口程序</strong>，当每次接到http前端服务器的请求都会开启一个php-cgi进程进行处理，而且开启的php-cgi的过程中会先要重载配置，数据结构以及初始化运行环境，如果更新了php配置，那么就需要重启php-cgi才能生效，这也是php-cgi的不足之处。</p>
+</blockquote>
+<p>这里需要注意的是：php-cgi不是php脚本的解析器，它是cgi协议的解析器，然后通过调用php的php_execute_script函数来解析和运行php脚本。</p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559006.jpg" alt="img"></p>
+<h2 id="php-fpm"><a href="#php-fpm" class="headerlink" title="php-fpm"></a>php-fpm</h2><blockquote>
+<p>php-fpm是php提供给web serve也就是http前端服务器的<strong>fastcgi协议接口程序</strong>，它不会像php-cgi一样每次连接都会重新开启一个进程，处理完请求又关闭这个进程，而是允许一个进程对多个连接进行处理，而不会立即关闭这个进程，而是会接着处理下一个连接。它可以说是php-cgi的一个管理程序，是对php-cgi的改进。</p>
+</blockquote>
+<p>换句话说：php-fpm其实是升级版的php-cgi，但是最后处理的单元仍然是一个php-cgi程序，php-fpm可以更好的去调度资源来实现fastcgi协议。</p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/blog1/202108291559007.jpg" alt="img"></p>
+<p><strong>重点PS：</strong>在刚才配置lnmp过程中，我们安装了php-fpm包，在配置lamp过程中并没有安装，这是为什么呢？</p>
+<p>答：apache使用的是一种名为mod_php模式去解析php的，即mod_php 模式是将php模块安装到apache中，apache每接收一个请求，都会产生一个进程来连接php-cgi来完成请求，可想而知，如果一旦用户过多，并发数过多，服务器就会承受不住了。</p>
+<p>而Nginx只负责反向代理/请求转发,不负责管理php-cgi进程,所以Nginx一般配合能够自行管理工作进程(子进程)的php-fpm使用。Nginx不能像Apache那样直接执行外部可执行程序，但Nginx可以作为代理服务器，将请求转发给后端服务器，这也是Nginx的主要作用之一。</p>
+<h2 id="Spawn-FCGI"><a href="#Spawn-FCGI" class="headerlink" title="Spawn-FCGI"></a>Spawn-FCGI</h2><blockquote>
+<p>Spawn-FCGI是一个通用的FastCGI管理服务器，它是lighttpd中的一部份，很多人都用Lighttpd的Spawn-FCGI进行FastCGI模式下的管理工作，不过有不少缺点。Spawn-FCGI目前已经独成为一个项目，更加稳定一些，也给很多Web 站点的配置带来便利。已经有不少站点将它与nginx搭配来解决动态网页。</p>
+</blockquote>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>CGI和FastCGI严格意义上来说是协议，CGI进程和FastCGI进程就是具有该协议特性的进程。</li>
+<li>php-cgi和php-fpm都是协议接口程序，用来管理采用不同协议的php-cgi程序，前者管理cgi进程，后者管理fastcgi进程。</li>
+<li>spawn-fcgi和php-fpm作用相同，都是fastcgi进程管理器。</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Seizer</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://seizer-zyx.github.io/post/2021-09/LAMP%E5%92%8CLNMP%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E7%9A%84%E8%89%B0%E8%BE%9B%E5%8E%86%E7%A8%8B/">https://seizer-zyx.github.io/post/2021-09/LAMP%E5%92%8CLNMP%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E7%9A%84%E8%89%B0%E8%BE%9B%E5%8E%86%E7%A8%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://seizer-zyx.github.io" target="_blank">Seizer</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/seizer-zyx/picgo/master/202108292144431.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/2021-09/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B/"><img class="prev-cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062124522.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">ctfd靶场搭建过程</div></div></a></div><div class="next-post pull-right"><a href="/post/2021-08/hello-world/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Hello World</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/2021-09/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B/" title="ctfd靶场搭建过程"><img class="cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062124522.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-15</div><div class="title">ctfd靶场搭建过程</div></div></a></div><div><a href="/post/2021-10/Flask%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%85%B6%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" title="Flask框架及其漏洞学习"><img class="cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062123578.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-13</div><div class="title">Flask框架及其漏洞学习</div></div></a></div><div><a href="/post/2021-10/Phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" title="Phar反序列化漏洞"><img class="cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062110437.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-13</div><div class="title">Phar反序列化漏洞</div></div></a></div><div><a href="/post/2021-10/XXE%E6%BC%8F%E6%B4%9E/" title="XXE漏洞的学习"><img class="cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062110436.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-26</div><div class="title">XXE漏洞的学习</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#LAMP%E7%8E%AF%E5%A2%83%E7%9A%84%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text">LAMP环境的搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Apache"><span class="toc-number">1.1.</span> <span class="toc-text">Apache</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85apache%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.1.</span> <span class="toc-text">安装apache遇到的问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql"><span class="toc-number">1.2.</span> <span class="toc-text">mysql</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BB%E5%BD%95mysql%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.1.</span> <span class="toc-text">登录mysql的方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PHP"><span class="toc-number">1.3.</span> <span class="toc-text">PHP</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lnmp%E7%8E%AF%E5%A2%83%E7%9A%84%E6%90%AD%E5%BB%BA"><span class="toc-number">2.</span> <span class="toc-text">Lnmp环境的搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx"><span class="toc-number">2.1.</span> <span class="toc-text">nginx</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PHP-1"><span class="toc-number">2.2.</span> <span class="toc-text">PHP</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEPHP%E7%8E%AF%E5%A2%83%E4%B8%AD%E5%87%BA%E7%8E%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">配置PHP环境中出现的一些问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CGI"><span class="toc-number">3.1.</span> <span class="toc-text">CGI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FastCGI"><span class="toc-number">3.2.</span> <span class="toc-text">FastCGI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#php-cgi"><span class="toc-number">3.3.</span> <span class="toc-text">php-cgi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#php-fpm"><span class="toc-number">3.4.</span> <span class="toc-text">php-fpm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spawn-FCGI"><span class="toc-number">3.5.</span> <span class="toc-text">Spawn-FCGI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.5.1.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Seizer</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.16/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://python-gitee-calendar-api.vercel.app/api?seizer-zyx";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="seizer-zyx";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style>undefined</style><script data-pjax>
+  function butterfly_clock_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/tzy13755126023/BLOG_SOURCE/theme_f/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_injector_config();
+  }
+  </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax src="https://cdn.jsdelivr.net/npm/hexo-butterfly-clock/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>

