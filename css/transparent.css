@@ -1,9 +1,8 @@
 /* 所有页面背景 */
 
-#aside-content>.card-widget,
 #recent-posts>.recent-post-item,
-#post {
-    /* 以下代表透明度为0.5 */
+.layout>div:first-child:not(.recent-posts),
+#aside-content .card-widget {
     background: rgba(255, 255, 255, .8);
 }
 
