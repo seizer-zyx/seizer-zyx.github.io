@@ -12,3 +12,10 @@
 #footer {
     background: none;
 }
+
+
+/* card卡片图片填充 */
+
+#recent-posts>.recent-post-item .post_cover img.post_bg {
+    object-fit: fill !important;
+}
