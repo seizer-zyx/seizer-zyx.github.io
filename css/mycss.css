@@ -16,9 +16,10 @@
 
 /* card卡片图片填充 */
 
-#recent-posts>.recent-post-item .post_cover img.post_bg {
+
+/* #recent-posts>.recent-post-item .post_cover img.post_bg {
     object-fit: fill !important;
-}
+} */
 
 
 /* 修改字体 */
