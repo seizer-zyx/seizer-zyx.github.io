@@ -40,22 +40,28 @@ body,
 
 /* 滚动条修改 */
 
-::-webkit-scrollbar {
-    width: 0px;
-    height: 8px
-}
-
 ::-webkit-scrollbar-track {
     border-radius: 2em;
-    background-color: rgba(37, 133, 243, 0.7) !important;
+    background-color: rgba(204, 226, 255, 1);
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgb(255 255 255 / .3);
-    background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.1) 75%, transparent 75%, transparent);
-    border-radius: 2em
+    background-color: #49b1f5;
+    background-image: -webkit-linear-gradient( 45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.4) 75%, transparent 75%, transparent);
 }
 
 ::-webkit-scrollbar-corner {
     background-color: transparent
+}
+
+
+/* 优化magnet插件卡片不对齐问题 */
+
+.magnet_item {
+    margin: 0px 2px;
+}
+
+#catalog_magnet {
+    justify-content: center !important;
+    /*原本为space-between*/
 }
