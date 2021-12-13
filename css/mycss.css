@@ -14,6 +14,13 @@
 }
 
 
+/* 页脚字体颜色 */
+
+#footer-wrap {
+    color: #f97aff;
+}
+
+
 /* card卡片图片填充 */
 
 
@@ -82,4 +89,129 @@ a,
 button,
 img {
     cursor: url(https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/img/pointer.cur), auto
+}
+
+
+/* 博主昵称颜色 --也就是首页侧边栏头像下面那个昵称*/
+
+.author-info__name {
+    color: #f84fffc4;
+}
+
+
+/* 导航栏居中 */
+
+#navFn {
+    flex: 1;
+    text-align: right;
+}
+
+#nav #search-button {
+    display: inline;
+    padding: 0 0 0 0.3rem;
+    position: relative;
+    padding-bottom: 0.3rem;
+    text-shadow: 0.05rem 0.05rem 0.1rem rgb(0 0 0 / 30%);
+    cursor: pointer;
+}
+
+
+/* 文章标题居中 */
+
+#page h1.page-title,
+#post>#post-info {
+    text-align: center
+}
+
+
+/* 修改图片圆角 */
+
+img[src*="#img-radius"] {
+    border-radius: 9px;
+}
+
+
+/* 侧边栏圆角 */
+
+#aside-content .card-widget {
+    border-radius: 25px;
+}
+
+
+/* 文章页圆角 */
+
+.layout>div:first-child:not(.recent-posts) {
+    border-radius: 25px;
+}
+
+
+/* 双栏卡片圆角 */
+
+#recent-posts>.recent-post-item {
+    border-radius: 25px;
+}
+
+
+/* github按钮圆角 */
+
+#card-info-btn {
+    border-radius: 25px;
+    overflow: hidden
+}
+
+#card-info-btn:before {
+    border-radius: 25px
+}
+
+
+/* 右侧小按钮圆角 */
+
+#rightside>div>button,
+#to_comment {
+    margin-right: 4px;
+    border-radius: 5px;
+}
+
+
+/* 目录圆角 */
+
+#aside-content #card-toc .toc-content .toc-link.active {
+    border-radius: 8px;
+}
+
+
+/* 翻页圆角 */
+
+#pagination a.extend,
+#pagination .page-number,
+#pagination span {
+    background-color: rgba(255, 255, 255, .8);
+    border-radius: 8px;
+    height: 1.6rem;
+    text-align: center;
+    line-height: 1.6rem;
+    display: inline-block;
+    min-width: 1.6rem;
+}
+
+
+/* 横向排布子菜单 */
+
+#nav .menus_items .menus_item .menus_item_child li {
+    display: inline-block;
+}
+
+
+/* 圆角隐藏 */
+
+ul.menus_item_child {
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+
+/* 调整空隙，确保不会天下武功唯快不破 */
+
+#nav .menus_items .menus_item .menus_item_child {
+    margin-top: 0px !important;
 }
