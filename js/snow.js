@@ -1,13 +1,8 @@
-/*样式一*/
 (function($) {
     $.fn.snow = function(options) {
-        var $flake = $('<div id="snowbox" />').css({
-                'position': 'absolute',
-                'z-index': '9999',
-                'top': '-50px'
-            }).html('❄'),
-            documentHeight = $(document).height(),
-            documentWidth = $(document).width(),
+        var $flake = $('<div id="snowbox" />').css({ 'position': 'absolute', 'z-index': '9999', 'top': '-50px' }).html('&#10052;'),
+            documentHeight = document.body.clientHeight,
+            documentWidth = document.body.clientWidth,
             defaults = {
                 minSize: 10,
                 maxSize: 20,
